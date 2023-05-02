@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const pathToFile = path.join(__dirname, 'text.txt');
+const pathToFile = path.resolve(__dirname, 'file.txt');
 const output = fs.createWriteStream(pathToFile);
 
 const { stdin, stdout } = process;
