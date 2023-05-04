@@ -47,5 +47,5 @@ function copyFolder () {
 }
 
 function endCopy () {
-  console.log("Копирование завершено!")
+  console.log("Copy completed!")
 }
