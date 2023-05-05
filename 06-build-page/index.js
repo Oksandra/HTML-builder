@@ -124,11 +124,6 @@ function  replaceTagsByComponents(files, indexContent) {
         const fileName =  path.basename(pathFile, fileExt);
         indexContent =  indexContent.replace(`{{${fileName}}}`, component);
         output.write(indexContent);
-
-       
-       // fs.writeFile(pathToIndex, indexContent, (err) => {
-        //  if (err) console.log(err); }
-        //  )
        });  
   }  
   })
