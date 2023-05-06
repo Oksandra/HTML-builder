@@ -6,14 +6,13 @@ const pathToNewFile = path.resolve(__dirname, 'files-copy');
 
 fs.access(pathToNewFile, (err) => {
   if (err) {
-    creatFolder ();
-    copyFolder(pathToFile, pathToNewFile);
-    endCopy ();
+    creatFolder();
   } else {
-    cleanFolder (pathToNewFile)
-    copyFolder(pathToFile, pathToNewFile);
-    endCopy ();
+    cleanFolder(pathToNewFile);
+    deleteExtraFolders(pathToFile, pathToNewFile);
   }
+    copyFolder(pathToFile, pathToNewFile);
+    endCopy();
 });
 
 function creatFolder () {
@@ -33,11 +32,11 @@ function cleanFolder (currentPath) {
   const pathFile = path.resolve(currentPath, file.name);
   fs.unlink(pathFile, (err) => {
   if (err) console.log(err);
-  });
-  }
-  })
-  });
-  }
+      });
+     }
+   })
+ });
+}
 
 function copyFolder (oldPath, newPath) {
   fs.readdir(oldPath, {withFileTypes: true}, (err, files) => {
@@ -63,4 +62,26 @@ function copyFolder (oldPath, newPath) {
 
 function endCopy () {
   console.log("Copy completed!")
+}
+
+function deleteExtraFolders(oldPath, newPath) {
+  let arr = [];
+  fs.readdir(oldPath, {withFileTypes: true}, (err, files) => {
+    files.forEach(file => {
+      if(file.isDirectory()) { 
+        arr.push(file.name);
+      }
+  })
+  fs.readdir(newPath, {withFileTypes: true}, (err, dirs) => {
+    dirs.forEach(dir => {
+      const name = dir.name;
+      if(dir.isDirectory() && !name.includes(arr) || dir.isDirectory() && arr.length === 0) {
+        const newfolder = path.resolve(newPath, dir.name);
+        fs.rmdir(newfolder, err => {
+          if (err) console.log(err); 
+       });
+       }
+    })
+  })
+})
 }

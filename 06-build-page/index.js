@@ -48,7 +48,6 @@ function addStyle() {
   })
 }
 
-
 function cleanFolder (currentPath) {
   fs.readdir(currentPath, {withFileTypes: true}, (err, files) => {
     if (err) console.log(err);
