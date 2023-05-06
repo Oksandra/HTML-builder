@@ -40,7 +40,7 @@ function addStyle() {
     if(fileExt === '.css') {
       const input =  fs.createReadStream(pathFile);
       let data = '';
-      input.on('data', chunk => data += chunk);
+      input.on('data', chunk => data += chunk + '\n');
       input.on('error', error => console.log('Error', error.message));
       input.on('end', () => output.write(data));  
     }  
@@ -90,7 +90,6 @@ function copyFolder (oldPath, newPath) {
 }
 
 function addIndex() {
- 
       const input =  fs.createReadStream(pathToTemplate);
       let data = '';
       input.on('data', chunk => data += chunk);

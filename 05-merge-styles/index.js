@@ -14,7 +14,7 @@ fs.readdir(pathToFile , (err, files) => {
   if(fileExt === '.css') {
     const input =  fs.createReadStream(pathFile);
     let data = '';
-    input.on('data', chunk => data += chunk);
+    input.on('data', chunk => data += chunk + '\n');
     input.on('end', () => output.write(data));  
   }  
   })
