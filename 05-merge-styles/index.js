@@ -11,12 +11,12 @@ fs.readdir(pathToFile , (err, files) => {
   files.forEach(file => {
     const pathFile = path.resolve(pathToFile, file);
     const fileExt = path.extname(pathFile);
-  if(fileExt === '.css') {
-    const input =  fs.createReadStream(pathFile);
-    let data = '';
-    input.on('data', chunk => data += chunk + '\n');
-    input.on('end', () => output.write(data));  
-  }  
-  })
-  console.log('Done!')
-})
+    if(fileExt === '.css') {
+      const input =  fs.createReadStream(pathFile);
+      let data = '';
+      input.on('data', chunk => data += chunk + '\n');
+      input.on('end', () => output.write(data));  
+    }  
+  });
+  console.log('Done!');
+});

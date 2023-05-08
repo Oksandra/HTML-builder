@@ -12,11 +12,10 @@ fs.readdir(pathToFile, {withFileTypes: true} , (err, files) => {
       const fileExt = path.extname(pathFile);
       const fileName = path.basename(pathFile, fileExt);
 
-       fs.stat(pathFile, (err, stats) => {
+      fs.stat(pathFile, (err, stats) => {
         if (err) console.log(err);
         console.log(`${fileName} - ${fileExt.slice(1)} - ${stats.size}b`);
       });
-     ;
     }
-  })
+  });
 });
