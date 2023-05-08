@@ -14,20 +14,17 @@ fs.access(pathToNewFile, (err) => {
   if (err) {
     creatFolder();
   } else {
-    cleanFolder(pathToNewAssets);
+    cleanAndCreatFolder();
   }
+  
+});
+
+async function creatFolder() {
+  await fs.promises.mkdir(pathToNewFile, { recursive: true }); 
+  await fs.promises.mkdir(pathToNewAssets, { recursive: true }); 
   addStyle();
   copyFolder(pathToAssets, pathToNewAssets);
   addIndex();
-});
-
-function creatFolder() {
-  fs.mkdir(pathToNewFile, { recursive: true }, (err) => {
-    if (err) console.log(err);
-  }); 
-  fs.mkdir(pathToNewAssets, { recursive: true }, (err) => {
-    if (err) console.log(err);
-  }); 
 }
 
 function addStyle() {
@@ -48,22 +45,13 @@ function addStyle() {
   });
 }
 
-function cleanFolder (currentPath) {
-  fs.readdir(currentPath, {withFileTypes: true}, (err, files) => {
-    if (err) console.log(err);
-
-    files.forEach(file => {    
-      if(file.isDirectory()) {
-        const pathFile = path.resolve(currentPath, file.name);
-        cleanFolder (pathFile); 
-      } else {
-        const pathFile = path.resolve(currentPath, file.name);
-        fs.unlink(pathFile, (err) => {
-          if (err) console.log(err); 
-        });
-      }  
-    });
-  });
+async function cleanAndCreatFolder() {
+  await fs.promises.rm(pathToNewFile, {recursive:true});
+  await fs.promises.mkdir(pathToNewFile, { recursive: true }); 
+  await fs.promises.mkdir(pathToNewAssets, { recursive: true }); 
+  addStyle();
+  copyFolder(pathToAssets, pathToNewAssets);
+  addIndex();
 }
 
 function copyFolder (oldPath, newPath) {

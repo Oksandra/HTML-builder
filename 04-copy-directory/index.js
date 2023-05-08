@@ -8,34 +8,21 @@ fs.access(pathToNewFile, (err) => {
   if (err) {
     creatFolder();
   } else {
-    cleanFolder(pathToNewFile);
-    deleteExtraFolders(pathToFile, pathToNewFile);
+    cleanAndCreatFolder ();
   }
-  copyFolder(pathToFile, pathToNewFile);
-  endCopy();
 });
 
-function creatFolder () {
-  fs.mkdir(pathToNewFile, { recursive: true }, (err) => {
-    if (err) console.log(err);
-  }); 
+async function creatFolder () {
+  await fs.promises.mkdir(pathToNewFile, { recursive: true });
+  copyFolder(pathToFile, pathToNewFile);
+  endCopy();
 }
 
-function cleanFolder (currentPath) {
-  fs.readdir(currentPath, {withFileTypes: true}, (err, files) => {
-    if (err) console.log(err);
-    files.forEach(file => {
-      if(file.isDirectory()) {
-        const pathFile = path.resolve(currentPath, file.name);
-        cleanFolder (pathFile);
-      } else {
-        const pathFile = path.resolve(currentPath, file.name);
-        fs.unlink(pathFile, (err) => {
-          if (err) console.log(err);
-        });
-      }
-    });
-  });
+async function cleanAndCreatFolder () {
+  await fs.promises.rm(pathToNewFile, {recursive:true});
+  await fs.promises.mkdir(pathToNewFile, {recursive:true});
+  copyFolder(pathToFile, pathToNewFile);
+  endCopy();
 }
 
 function copyFolder (oldPath, newPath) {
@@ -62,26 +49,4 @@ function copyFolder (oldPath, newPath) {
 
 function endCopy () {
   console.log('Copy completed!');
-}
-
-function deleteExtraFolders(oldPath, newPath) {
-  let arr = [];
-  fs.readdir(oldPath, {withFileTypes: true}, (err, files) => {
-    files.forEach(file => {
-      if(file.isDirectory()) { 
-        arr.push(file.name);
-      }
-    });
-    fs.readdir(newPath, {withFileTypes: true}, (err, dirs) => {
-      dirs.forEach(dir => {
-        const name = dir.name;
-        if(dir.isDirectory() && !name.includes(arr) || dir.isDirectory() && arr.length === 0) {
-          const newfolder = path.resolve(newPath, dir.name);
-          fs.rm(newfolder, { recursive: true }, err => {
-            if (err) console.log(err); 
-          });
-        }
-      });
-    });
-  });
 }
